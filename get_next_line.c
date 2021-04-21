@@ -6,7 +6,7 @@
 /*   By: jodufour <jodufour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/20 23:55:08 by jodufour          #+#    #+#             */
-/*   Updated: 2021/04/21 21:42:01 by jodufour         ###   ########.fr       */
+/*   Updated: 2021/04/21 21:54:04 by jodufour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,10 @@ static void	gnl_parse(int fd, char **line, t_ctx *ctx)
 	{
 		ctx->ret = read(fd, ctx->buff, BUFFER_SIZE);
 		if (ctx->ret == ERROR)
+		{
 			gnl_free_n_set_ret(ctx, ERROR);
+			return ;
+		}
 		ctx->buff[ctx->ret] = 0;
 		ctx->residu = gnl_strchr(ctx->buff, '\n');
 		if (ctx->residu)
