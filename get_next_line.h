@@ -6,7 +6,7 @@
 /*   By: jodufour <jodufour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/20 23:52:53 by jodufour          #+#    #+#             */
-/*   Updated: 2021/04/21 01:54:10 by jodufour         ###   ########.fr       */
+/*   Updated: 2021/04/21 18:36:10 by jodufour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 # define GET_NEXT_LINE_H
 
 # include <stdbool.h>
+# include <stdio.h>
 
-# define BUFFER_SIZE 4096
+# define BUFFER_SIZE 2
 
 enum	e_ret
 {
@@ -28,11 +29,13 @@ typedef struct s_ctx
 {
 	bool	new_fd;
 	char	*buff;
+	char	*residu;
 	int		ret;
 }	t_ctx;
 
 int		get_next_line(int fd, char **line);
 void	gnl_free_n_set_ret(t_ctx *ctx, int ret);
-char	*gnl_strjoin(char const *s1, char const *s2);
+char	*gnl_strjoin(char *s1, char *s2);
+char	*gnl_strchr(char *s, char c);
 
 #endif

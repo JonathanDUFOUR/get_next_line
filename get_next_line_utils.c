@@ -6,14 +6,14 @@
 /*   By: jodufour <jodufour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/20 23:55:24 by jodufour          #+#    #+#             */
-/*   Updated: 2021/04/21 01:57:08 by jodufour         ###   ########.fr       */
+/*   Updated: 2021/04/21 18:35:28 by jodufour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "get_next_line.h"
 
-char	*gnl_strchr(char const *s, char const c)
+char	*gnl_strchr(char *s, char c)
 {
 	while (*s && *s != c)
 		++s;
@@ -22,14 +22,14 @@ char	*gnl_strchr(char const *s, char const c)
 	return (NULL);
 }
 
-char	*gnl_strdup(char const *s)
+char	*gnl_strdup(char *s)
 {
 	char	*output;
 	char	*p;
 
 	if (!s)
 		return (NULL);
-	output = malloc((gnl_strchr(s, 0) - s) * sizeof(char));
+	output = malloc((gnl_strchr(s, 0) - s + 1) * sizeof(char));
 	if (!output)
 		return (NULL);
 	p = output;
@@ -39,7 +39,7 @@ char	*gnl_strdup(char const *s)
 	return (output);
 }
 
-char	*gnl_strjoin(char const *line, char const *buff)
+char	*gnl_strjoin(char *line, char *buff)
 {
 	char	*output;
 	char	*p;
