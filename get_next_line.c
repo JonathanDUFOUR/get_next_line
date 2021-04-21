@@ -6,7 +6,7 @@
 /*   By: jodufour <jodufour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/20 23:55:08 by jodufour          #+#    #+#             */
-/*   Updated: 2021/04/21 18:32:23 by jodufour         ###   ########.fr       */
+/*   Updated: 2021/04/21 19:18:45 by jodufour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@
 
 static void	get_from_new_fd(int fd, char **line, t_ctx *ctx)
 {
-	char	*dent;
-
 	ctx->ret = 1;
 	while (ctx->ret > 0)
 	{
@@ -27,18 +25,27 @@ static void	get_from_new_fd(int fd, char **line, t_ctx *ctx)
 		ctx->buff[ctx->ret] = 0;
 		ctx->residu = gnl_strchr(ctx->buff, '\n');
 		if (ctx->residu)
+		{
 			printf("Found a newline !\n");
-		dent = *line;
+			*ctx->residu = 0;
+			++ctx->residu;
+			ctx->ret = LINE_READ;
+			ctx->new_fd = false;
+		}
+		ctx->dent = *line;
 		*line = gnl_strjoin(*line, ctx->buff);
 		printf("*line == \"%s\"\n", *line);
-		free(dent);
+		free(ctx->dent);
+		if (ctx->residu)
+			break ;
 	}
-	gnl_free_n_set_ret(ctx, EOF_REACHED);
+	if (!ctx->ret)
+		gnl_free_n_set_ret(ctx, EOF_REACHED);
 }
 
 static void	get_from_known_fd(int fd, char **line, t_ctx *ctx)
 {
-	return ;
+	gnl_free_n_set_ret(ctx, EOF_REACHED);
 }
 
 int	get_next_line(int fd, char **line)

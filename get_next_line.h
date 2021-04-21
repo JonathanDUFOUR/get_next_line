@@ -6,7 +6,7 @@
 /*   By: jodufour <jodufour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/20 23:52:53 by jodufour          #+#    #+#             */
-/*   Updated: 2021/04/21 18:36:10 by jodufour         ###   ########.fr       */
+/*   Updated: 2021/04/21 19:19:09 by jodufour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include <stdbool.h>
 # include <stdio.h>
 
-# define BUFFER_SIZE 2
+# define BUFFER_SIZE 4096
 
 enum	e_ret
 {
@@ -30,6 +30,7 @@ typedef struct s_ctx
 	bool	new_fd;
 	char	*buff;
 	char	*residu;
+	char	*dent;
 	int		ret;
 }	t_ctx;
 
