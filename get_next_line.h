@@ -6,7 +6,7 @@
 /*   By: jodufour <jodufour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/20 23:52:53 by jodufour          #+#    #+#             */
-/*   Updated: 2021/04/21 20:05:19 by jodufour         ###   ########.fr       */
+/*   Updated: 2021/04/21 20:35:56 by jodufour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,9 @@
 # include <stdbool.h>
 # include <stdio.h>
 
-# define BUFFER_SIZE 20
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 4096
+# endif
 
 enum	e_ret
 {
