@@ -6,7 +6,7 @@
 /*   By: jodufour <jodufour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/20 23:55:08 by jodufour          #+#    #+#             */
-/*   Updated: 2021/04/21 20:43:33 by jodufour         ###   ########.fr       */
+/*   Updated: 2021/04/21 21:42:01 by jodufour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,11 @@ int	get_next_line(int fd, char **line)
 		ctx.buff = malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!ctx.buff)
 		return (ERROR);
+	*line = NULL;
 	if (ctx.new_fd == true)
-		ctx.ret = 1;
+		ctx.ret = 42;
 	else
 	{
-		free(*line);
-		*line = NULL;
 		*line = gnl_strjoin(*line, ctx.residu);
 		ctx.residu = gnl_strchr(ctx.residu, '\n');
 		if (ctx.residu)

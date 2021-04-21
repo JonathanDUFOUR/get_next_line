@@ -6,7 +6,7 @@
 /*   By: jodufour <jodufour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/21 00:35:45 by jodufour          #+#    #+#             */
-/*   Updated: 2021/04/21 17:28:48 by jodufour         ###   ########.fr       */
+/*   Updated: 2021/04/21 21:32:29 by jodufour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int	main(int ac, char **av)
 			while (ret == LINE_READ)
 			{
 				printf("\033[33mLine read:\033[0m\n%s\n", line);
+				free(line);
 				ret = get_next_line(fd, &line);
 			}
 			if (ret == EOF_REACHED)
