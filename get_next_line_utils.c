@@ -6,75 +6,89 @@
 /*   By: jodufour <jodufour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/20 23:55:24 by jodufour          #+#    #+#             */
-/*   Updated: 2021/04/21 20:20:01 by jodufour         ###   ########.fr       */
+/*   Updated: 2021/05/30 14:41:42 by jodufour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
+#include <unistd.h>
 #include "get_next_line.h"
 
-char	*gnl_strchr(char *s, char c)
+int	indexof(char const *s, char const c)
 {
-	while (*s && *s != c)
-		++s;
-	if (*s == c)
-		return (s);
-	return (NULL);
+	int	idx;
+
+	idx = 0;
+	while (s && s[idx] && s[idx] != c)
+		++idx;
+	return (idx);
 }
 
-char	*gnl_strdup(char *s)
+char	*gnl_concat(char const *s1, char const *s2, int n)
 {
-	char	*output;
-	char	*p;
+	int		i;
+	int		len;
+	char	*res;
 
-	if (!s)
+	i = 0;
+	len = indexof(s1, 0) + indexof(s2, 0);
+	if (len > n && n >= 0)
+		len = n;
+	res = malloc((len + 1) * sizeof(char));
+	if (!res)
 		return (NULL);
-	p = gnl_strchr(s, '\n');
-	if (p)
-		output = malloc((p - s + 1) * sizeof(char));
+	res[len] = 0;
+	while (s1 && *s1 && i < len)
+		res[i++] = *s1++;
+	while (s2 && *s2 && i < len)
+		res[i++] = *s2++;
+	return (res);
+}
+
+static int	gnl_read(int const fd, char **rest, char **tmp, int *len)
+{
+	char	buff[BUFFER_SIZE + 1];
+	int		rd;
+
+	while (*len == indexof(*rest, 0))
+	{
+		rd = read(fd, buff, BUFFER_SIZE);
+		if (rd < 0)
+			return (-1);
+		if (rd == 0)
+			break ;
+		buff[rd] = 0;
+		*tmp = gnl_concat(*rest, buff, -1);
+		if (!*tmp)
+			return (-1);
+		free(*rest);
+		*rest = *tmp;
+		*len = indexof(*rest, '\n');
+	}
+	return (rd);
+}
+
+int	get_fd_line(int const fd, char **line, char **rest)
+{
+	char	*tmp;
+	int		len;
+	int		rd;
+
+	len = indexof(*rest, '\n');
+	rd = gnl_read(fd, rest, &tmp, &len);
+	if (rd == -1)
+		return (-1);
+	tmp = *rest;
+	if (tmp)
+		*line = gnl_concat(NULL, tmp, len);
 	else
-		output = malloc((gnl_strchr(s, 0) - s + 1) * sizeof(char));
-	if (!output)
-		return (NULL);
-	p = output;
-	while (*s && *s != '\n')
-		*p++ = *s++;
-	*p = 0;
-	return (output);
-}
-
-char	*gnl_strjoin(char *line, char *buff)
-{
-	char	*output;
-	char	*p;
-
-	if (!line && !buff)
-		return (NULL);
-	if (!line)
-		return (gnl_strdup(buff));
-	if (!buff)
-		return (gnl_strdup(line));
-	p = gnl_strchr(buff, '\n');
-	if (p)
-		output = malloc((gnl_strchr(line, 0) - line
-					+ p - buff + 1) * sizeof(char));
-	else
-		output = malloc((gnl_strchr(line, 0) - line
-					+ gnl_strchr(buff, 0) - buff + 1) * sizeof(char));
-	if (!output)
-		return (NULL);
-	p = output;
-	while (*line)
-		*p++ = *line++;
-	while (*buff && *buff != '\n')
-		*p++ = *buff++;
-	*p = 0;
-	return (output);
-}
-
-void	gnl_free_n_set_ret(t_ctx *ctx, int ret)
-{
-	free(ctx->buff);
-	ctx->buff = NULL;
-	ctx->ret = ret;
+		*line = gnl_concat(NULL, "", len);
+	if (!*line)
+		return (-1);
+	rd = (tmp && tmp[len] == '\n' && ++len);
+	*rest = NULL;
+	if (tmp && tmp[len])
+		*rest = gnl_concat(tmp + len, NULL, -1);
+	free(tmp);
+	return (rd || *rest);
 }

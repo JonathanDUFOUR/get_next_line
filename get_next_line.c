@@ -6,7 +6,7 @@
 /*   By: jodufour <jodufour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/20 23:55:08 by jodufour          #+#    #+#             */
-/*   Updated: 2021/04/22 00:28:16 by jodufour         ###   ########.fr       */
+/*   Updated: 2021/05/29 16:57:38 by jodufour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,56 +14,84 @@
 #include <unistd.h>
 #include "get_next_line.h"
 
-static void	gnl_parse(int fd, char **line, t_ctx *ctx)
+int		indexof(char const *s, char const c);
+char	*gnl_concat(char const *s1, char const *s2, int n);
+int		get_fd_line(int const fd, char **line, char **rest);
+
+static t_lst	*get_lst(void)
 {
-	while (ctx->ret > 0 && !ctx->residu)
+	static t_lst	lst = {0, NULL, NULL};
+
+	return (&lst);
+}
+
+bool	gnl_fd_del(int fd)
+{
+	t_lst *const	lst = get_lst();
+	t_elem			*curr;
+	t_elem			*prev;
+
+	curr = lst->head;
+	prev = NULL;
+	while (curr && curr->fd != fd)
 	{
-		ctx->ret = read(fd, ctx->buff, BUFFER_SIZE);
-		if (ctx->ret == ERROR)
-		{
-			gnl_free_n_set_ret(ctx, ERROR);
-			return ;
-		}
-		ctx->buff[ctx->ret] = 0;
-		ctx->residu = gnl_strchr(ctx->buff, '\n');
-		if (ctx->residu)
-		{
-			++ctx->residu;
-			ctx->ret = LINE_READ;
-			ctx->new_fd = false;
-		}
-		ctx->dent = *line;
-		*line = gnl_strjoin(*line, ctx->buff);
-		free(ctx->dent);
+		prev = curr;
+		curr = curr->next;
 	}
-	if (!ctx->ret)
+	if (!curr)
+		return (false);
+	if (prev)
+		prev->next = curr->next;
+	else
+		lst->head = curr->next;
+	if (curr == lst->tail)
+		lst->tail = prev;
+	--lst->size;
+	free(curr->rest);
+	free(curr);
+	return (true);
+}
+
+void	gnl_clear(void)
+{
+	t_lst *const	lst = get_lst();
+	t_elem			*next;
+
+	while (lst->head)
 	{
-		ctx->new_fd = true;
-		gnl_free_n_set_ret(ctx, EOF_REACHED);
+		next = lst->head->next;
+		free(lst->head->rest);
+		free(lst->head);
+		lst->head = next;
 	}
+	lst->size = 0;
+	lst->tail = NULL;
 }
 
 int	get_next_line(int fd, char **line)
 {
-	static t_ctx	ctx = {true, NULL, NULL, NULL, 42};
+	t_lst *const	lst = get_lst();
+	t_elem			*curr;
+	int				ret;
 
-	if (!ctx.buff)
-		ctx.buff = malloc((BUFFER_SIZE + 1) * sizeof(char));
-	if (!ctx.buff)
-		return (ERROR);
-	*line = NULL;
-	if (ctx.new_fd == true)
-		ctx.ret = 42;
-	else
+	curr = lst->head;
+	while (curr && curr->fd != fd)
+		curr = curr->next;
+	if (!curr)
 	{
-		*line = gnl_strjoin(*line, ctx.residu);
-		ctx.residu = gnl_strchr(ctx.residu, '\n');
-		if (ctx.residu)
-		{
-			++ctx.residu;
-			ctx.ret = LINE_READ;
-		}
+		curr = malloc(sizeof(t_elem));
+		if (!curr)
+			return (-1);
+		curr->fd = fd;
+		curr->rest = NULL;
+		curr->next = lst->head;
+		if (!lst->tail)
+			lst->tail = curr;
+		lst->head = curr;
+		++lst->size;
 	}
-	gnl_parse(fd, line, &ctx);
-	return (ctx.ret);
+	ret = get_fd_line(curr->fd, line, &curr->rest);
+	if (ret <= 0)
+		gnl_fd_del(curr->fd);
+	return (ret);
 }

@@ -6,7 +6,7 @@
 /*   By: jodufour <jodufour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/20 23:52:53 by jodufour          #+#    #+#             */
-/*   Updated: 2021/04/21 20:35:56 by jodufour         ###   ########.fr       */
+/*   Updated: 2021/05/29 16:58:11 by jodufour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,31 +14,31 @@
 # define GET_NEXT_LINE_H
 
 # include <stdbool.h>
-# include <stdio.h>
+# include <string.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 4096
+#  define BUFFER_SIZE 2048
 # endif
 
-enum	e_ret
+typedef struct s_elem	t_elem;
+typedef struct s_lst	t_lst;
+
+struct s_lst
 {
-	ERROR = -1,
-	EOF_REACHED,
-	LINE_READ
+	size_t	size;
+	t_elem	*head;
+	t_elem	*tail;
 };
 
-typedef struct s_ctx
+struct s_elem
 {
-	bool	new_fd;
-	char	*buff;
-	char	*residu;
-	char	*dent;
-	int		ret;
-}	t_ctx;
+	int		fd;
+	char	*rest;
+	t_elem	*next;
+};
 
 int		get_next_line(int fd, char **line);
-void	gnl_free_n_set_ret(t_ctx *ctx, int ret);
-char	*gnl_strjoin(char *s1, char *s2);
-char	*gnl_strchr(char *s, char c);
+bool	gnl_fd_del(int fd);
+void	gnl_clear(void);
 
 #endif
