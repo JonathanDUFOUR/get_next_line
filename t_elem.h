@@ -1,27 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   t_elem.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jodufour <jodufour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/20 23:52:53 by jodufour          #+#    #+#             */
-/*   Updated: 2021/07/06 12:52:23 by jodufour         ###   ########.fr       */
+/*   Created: 2021/07/06 12:50:38 by jodufour          #+#    #+#             */
+/*   Updated: 2021/07/06 12:51:27 by jodufour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#ifndef T_ELEM_H
+# define T_ELEM_H
 
-# include <stdbool.h>
-# include <string.h>
+typedef struct s_elem	t_elem;
 
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 4096
-# endif
-
-int		get_next_line(int fd, char **line);
-bool	gnl_fd_del(int fd);
-void	gnl_clear(void);
+struct s_elem
+{
+	int		fd;
+	char	*rest;
+	t_elem	*next;
+};
 
 #endif

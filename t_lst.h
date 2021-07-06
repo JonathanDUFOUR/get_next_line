@@ -1,27 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   t_lst.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jodufour <jodufour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/20 23:52:53 by jodufour          #+#    #+#             */
-/*   Updated: 2021/07/06 12:52:23 by jodufour         ###   ########.fr       */
+/*   Created: 2021/07/06 12:48:32 by jodufour          #+#    #+#             */
+/*   Updated: 2021/07/06 12:51:40 by jodufour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#ifndef T_LST_H
+# define T_LST_H
 
-# include <stdbool.h>
 # include <string.h>
+# include "t_elem.h"
 
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 4096
-# endif
+typedef struct s_lst	t_lst;
 
-int		get_next_line(int fd, char **line);
-bool	gnl_fd_del(int fd);
-void	gnl_clear(void);
+struct s_lst
+{
+	size_t	size;
+	t_elem	*head;
+	t_elem	*tail;
+};
 
 #endif
