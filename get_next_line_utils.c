@@ -6,7 +6,7 @@
 /*   By: jodufour <jodufour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/20 23:55:24 by jodufour          #+#    #+#             */
-/*   Updated: 2021/05/30 14:41:42 by jodufour         ###   ########.fr       */
+/*   Updated: 2021/07/22 01:52:38 by jodufour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,12 @@ char	*gnl_concat(char const *s1, char const *s2, int n)
 
 static int	gnl_read(int const fd, char **rest, char **tmp, int *len)
 {
-	char	buff[BUFFER_SIZE + 1];
+	char	buff[GNL_BUFF_SIZE + 1];
 	int		rd;
 
 	while (*len == indexof(*rest, 0))
 	{
-		rd = read(fd, buff, BUFFER_SIZE);
+		rd = read(fd, buff, GNL_BUFF_SIZE);
 		if (rd < 0)
 			return (-1);
 		if (rd == 0)

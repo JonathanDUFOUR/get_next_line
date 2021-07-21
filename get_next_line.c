@@ -6,31 +6,31 @@
 /*   By: jodufour <jodufour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/20 23:55:08 by jodufour          #+#    #+#             */
-/*   Updated: 2021/07/06 14:56:04 by jodufour         ###   ########.fr       */
+/*   Updated: 2021/07/22 01:49:23 by jodufour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <unistd.h>
 #include "get_next_line.h"
-#include "typedef/t_lst.h"
+#include "typedef/t_fd_lst.h"
 
 int		indexof(char const *s, char const c);
 char	*gnl_concat(char const *s1, char const *s2, int n);
 int		get_fd_line(int const fd, char **line, char **rest);
 
-static t_lst	*get_lst(void)
+static t_fd_lst	*get_fd_lst(void)
 {
-	static t_lst	lst = {0, NULL, NULL};
+	static t_fd_lst	lst = {0, NULL, NULL};
 
 	return (&lst);
 }
 
 bool	gnl_fd_del(int fd)
 {
-	t_lst *const	lst = get_lst();
-	t_elem			*curr;
-	t_elem			*prev;
+	t_fd_lst *const	lst = get_fd_lst();
+	t_fd			*curr;
+	t_fd			*prev;
 
 	curr = lst->head;
 	prev = NULL;
@@ -55,8 +55,8 @@ bool	gnl_fd_del(int fd)
 
 void	gnl_clear(void)
 {
-	t_lst *const	lst = get_lst();
-	t_elem			*next;
+	t_fd_lst *const	lst = get_fd_lst();
+	t_fd			*next;
 
 	while (lst->head)
 	{
@@ -71,8 +71,8 @@ void	gnl_clear(void)
 
 int	get_next_line(int fd, char **line)
 {
-	t_lst *const	lst = get_lst();
-	t_elem			*curr;
+	t_fd_lst *const	lst = get_lst();
+	t_fd			*curr;
 	int				ret;
 
 	curr = lst->head;
@@ -80,7 +80,7 @@ int	get_next_line(int fd, char **line)
 		curr = curr->next;
 	if (!curr)
 	{
-		curr = malloc(sizeof(t_elem));
+		curr = malloc(sizeof(t_fd));
 		if (!curr)
 			return (-1);
 		curr->fd = fd;

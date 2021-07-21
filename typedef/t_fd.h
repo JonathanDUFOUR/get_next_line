@@ -1,28 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   t_lst.h                                            :+:      :+:    :+:   */
+/*   t_fd.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jodufour <jodufour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/07/06 12:48:32 by jodufour          #+#    #+#             */
-/*   Updated: 2021/07/06 12:51:40 by jodufour         ###   ########.fr       */
+/*   Created: 2021/07/06 12:50:38 by jodufour          #+#    #+#             */
+/*   Updated: 2021/07/22 01:45:19 by jodufour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef T_LST_H
-# define T_LST_H
+#ifndef T_FD_H
+# define T_FD_H
 
-# include <string.h>
-# include "t_elem.h"
+typedef struct s_fd	t_fd;
 
-typedef struct s_lst	t_lst;
-
-struct s_lst
+struct s_fd
 {
-	size_t	size;
-	t_elem	*head;
-	t_elem	*tail;
+	int		fd;
+	char	*rest;
+	t_fd	*next;
 };
 
 #endif
