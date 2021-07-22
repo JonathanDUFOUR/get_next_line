@@ -6,14 +6,14 @@
 /*   By: jodufour <jodufour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/20 23:55:08 by jodufour          #+#    #+#             */
-/*   Updated: 2021/07/22 01:49:23 by jodufour         ###   ########.fr       */
+/*   Updated: 2021/07/22 02:03:21 by jodufour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <unistd.h>
 #include "get_next_line.h"
-#include "typedef/t_fd_lst.h"
+#include "typedefs/t_fd_lst.h"
 
 int		indexof(char const *s, char const c);
 char	*gnl_concat(char const *s1, char const *s2, int n);
