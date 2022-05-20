@@ -13,7 +13,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include "get_next_line.h"
-#include "typedefs/t_fd_lst.h"
+#include "type/t_fd_lst.h"
 
 int		indexof(char const *s, char const c);
 char	*gnl_concat(char const *s1, char const *s2, int n);
@@ -71,7 +71,7 @@ void	gnl_clear(void)
 
 int	get_next_line(int fd, char **line)
 {
-	t_fd_lst *const	lst = get_lst();
+	t_fd_lst *const	lst = get_fd_lst();
 	t_fd			*curr;
 	int				ret;
 
