@@ -6,7 +6,7 @@
 /*   By: jodufour <jodufour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/20 23:55:08 by jodufour          #+#    #+#             */
-/*   Updated: 2021/07/22 02:03:21 by jodufour         ###   ########.fr       */
+/*   Updated: 2022/11/08 15:38:46 by jodufour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int		get_fd_line(int const fd, char **line, char **rest);
 
 static t_fd_lst	*get_fd_lst(void)
 {
-	static t_fd_lst	lst = {0, NULL, NULL};
+	static t_fd_lst	lst = {NULL, NULL, 0LU};
 
 	return (&lst);
 }
